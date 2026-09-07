@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hawaii Booths — Photo, Video &amp; Audio Booth Rentals</title>
+<meta name="description" content="Premium photo, video, and audio booth rentals for weddings, corporate events, birthdays, and celebrations across the islands. Professional prints in seconds, digital sharing instantly.">
+
+<!-- Fonts: one request, only the six faces actually used on the page.
+     Playfair Display 400/600 for headings, Inter 400/500/600 for everything else. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;600&display=swap">
+
+<!-- ─────────────────────────────────────────────────────────────
+     TAILWIND — Play CDN, DEVELOPMENT ONLY.
+     This script compiles Tailwind in the browser on every page load. It is
+     fine for a client review build, but it ships the whole engine to the
+     visitor and can flash unstyled content on slow connections. Before this
+     goes live for real, compile the CSS ahead of time instead:
+
+         npx tailwindcss -i src/input.css -o assets/tailwind.css --minify
+
+     ...then delete these two script tags and link the built file. The token
+     config below moves into tailwind.config.js unchanged.
+
+     The version is pinned so a future Tailwind release cannot silently change
+     how this page renders between now and the client review.
+     ───────────────────────────────────────────────────────────── -->
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink:   '#062A3A',  // deepest ocean — body text, dark sections
+          ocean: '#0E4D63',  // primary brand blue
+          surf:  '#2E8B9E',  // mid-tone accent, hovers, focus rings
+          sand:  '#EADFC8',  // warm sand — soft section backgrounds
+          gold:  '#C4922F',  // warm gold — CTA, rules, small accents only
+          shell: '#FDFCFA',  // crisp off-white page background
+        },
+        fontFamily: {
+          display: ['"Playfair Display"', 'Georgia', 'serif'],
+          sans:    ['Inter', 'system-ui', 'sans-serif'],
+        },
+      },
+    },
+  }
+</script>
+
+<!-- Repeated utility groups, declared once. Must come after the CDN script. -->
+<style type="text/tailwindcss">
+  @layer components {
+    .nav-link {
+      @apply rounded-sm text-sm font-medium text-ink/80 transition-colors hover:text-ocean
+             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf
+             focus-visible:ring-offset-4 focus-visible:ring-offset-shell;
+    }
+    .dropdown-item {
+      @apply block px-4 py-2.5 text-sm text-ink/80 transition-colors hover:bg-sand/50
+             hover:text-ink focus-visible:bg-sand/50 focus-visible:outline-none
+             focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-surf;
+    }
+    .mobile-link {
+      @apply block py-4 text-left font-display text-2xl text-ink
+             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf;
+    }
+  }
+</style>
+
+<style>
+  /* Anchor links land below the sticky header instead of underneath it. */
+  [id] { scroll-margin-top: 6rem; }
+
+  body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
+  /* Accessibility floor: when the visitor has asked their OS to reduce motion,
+     nothing on this page animates — including the printer reveal in a later
+     section, which checks this same query from JS. */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* The scrolled state of the header. Written as plain CSS rather than
+     JS-toggled utility classes so it cannot depend on the Play CDN noticing a
+     DOM mutation. These two colours mirror the shell and ink tokens above —
+     keep them in sync if the palette changes. */
+  .is-scrolled {
+    background-color: rgb(253 252 250 / 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom-color: rgb(6 42 58 / 0.10);
+  }
+</style>
+</head>
+
+<body class="bg-shell font-sans text-ink">
+
+<a href="#main"
+   class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-5 focus:py-2.5 focus:text-sm focus:font-medium focus:text-shell">
+  Skip to content
+</a>
+
+<!-- ═══════════════════════════ NAVBAR ═══════════════════════════ -->
+<header id="site-header"
+        class="sticky top-0 z-50 border-b border-transparent transition-colors duration-300">
+  <nav aria-label="Primary" class="mx-auto flex h-[4.5rem] max-w-[90rem] items-center gap-8 px-6 md:px-10">
+
+    <!-- Wordmark -->
+    <a href="#top"
+       class="shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-4 focus-visible:ring-offset-shell">
+      <span class="block font-display text-lg leading-none tracking-[0.08em] text-ink md:text-xl">HAWAII BOOTHS</span>
+      <span aria-hidden="true" class="mt-1.5 block h-px w-6 bg-gold"></span>
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="ml-auto hidden items-center gap-7 lg:flex">
+      <li><a href="#top"   class="nav-link">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+
+      <!-- Services dropdown.
+           Opens on hover only where hovering is real (fine pointer); on a
+           touchscreen the same gesture is a tap, so there the trigger is a
+           plain toggle button. Tabbing past the last item closes the menu
+           rather than trapping focus — a menu is not a modal, and trapping
+           here would strand keyboard users inside the nav. -->
+      <li class="relative" data-dropdown>
+        <button type="button" data-dropdown-trigger
+                aria-expanded="false" aria-haspopup="true" aria-controls="services-menu"
+                class="nav-link flex items-center gap-1.5">
+          Services
+          <svg data-dropdown-caret aria-hidden="true" viewBox="0 0 10 6" class="h-1.5 w-2.5 transition-transform duration-200">
+            <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div id="services-menu" data-dropdown-menu hidden
+             class="absolute left-0 top-full w-56 border border-ink/10 bg-shell py-2 shadow-[0_12px_32px_-12px_rgb(6_42_58_/_0.25)]">
+          <a href="#services" class="dropdown-item">Photo Booths</a>
+          <a href="#services" class="dropdown-item">Video Booths</a>
+          <a href="#services" class="dropdown-item">Audio Booths</a>
+          <a href="#services" class="dropdown-item">Other Services</a>
+        </div>
+      </li>
+
+      <li><a href="#pricing" class="nav-link">Pricing</a></li>
+      <li><a href="#gallery" class="nav-link">Gallery</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+
+    <a href="#contact"
+       class="ml-auto hidden rounded-full bg-gold px-6 py-2.5 text-sm font-semibold text-ink transition-[filter] hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell lg:ml-0 lg:block">
+      Book your date
+    </a>
+
+    <!-- Mobile toggle -->
+    <button type="button" id="menu-toggle" aria-expanded="false" aria-controls="mobile-menu"
+            class="ml-auto flex h-11 w-11 items-center justify-center rounded-full text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell lg:hidden">
+      <span class="sr-only">Open menu</span>
+      <svg aria-hidden="true" viewBox="0 0 24 24" class="h-6 w-6"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </nav>
+</header>
+
+<!-- Full-screen mobile panel -->
+<div id="mobile-menu" hidden class="fixed inset-0 z-[60] bg-shell lg:hidden">
+  <div class="flex h-[4.5rem] items-center px-6">
+    <span class="font-display text-lg tracking-[0.08em]">HAWAII BOOTHS</span>
+    <button type="button" id="menu-close"
+            class="ml-auto flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+      <span class="sr-only">Close menu</span>
+      <svg aria-hidden="true" viewBox="0 0 24 24" class="h-6 w-6"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <nav aria-label="Mobile" class="h-[calc(100%-4.5rem)] overflow-y-auto px-6 pb-10">
+    <ul class="divide-y divide-ink/10 border-y border-ink/10">
+      <li><a href="#top" class="mobile-link">Home</a></li>
+      <li><a href="#about" class="mobile-link">About</a></li>
+      <li>
+        <button type="button" id="mobile-services-toggle" aria-expanded="false" aria-controls="mobile-services"
+                class="mobile-link flex w-full items-center justify-between">
+          Services
+          <svg id="mobile-services-caret" aria-hidden="true" viewBox="0 0 10 6" class="h-2 w-3.5 transition-transform duration-200">
+            <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <ul id="mobile-services" hidden class="pb-4 pl-4">
+          <li><a href="#services" class="block py-2 text-base text-ink/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf">Photo Booths</a></li>
+          <li><a href="#services" class="block py-2 text-base text-ink/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf">Video Booths</a></li>
+          <li><a href="#services" class="block py-2 text-base text-ink/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf">Audio Booths</a></li>
+          <li><a href="#services" class="block py-2 text-base text-ink/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf">Other Services</a></li>
+        </ul>
+      </li>
+      <li><a href="#pricing" class="mobile-link">Pricing</a></li>
+      <li><a href="#gallery" class="mobile-link">Gallery</a></li>
+      <li><a href="#contact" class="mobile-link">Contact</a></li>
+    </ul>
+
+    <a href="#contact"
+       class="mt-8 block rounded-full bg-gold px-6 py-3.5 text-center text-base font-semibold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2">
+      Book your date
+    </a>
+  </nav>
+</div>
+
+<main id="main">
+<span id="top" aria-hidden="true"></span>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<section class="grid min-h-[calc(100svh-4.5rem)] grid-cols-1 items-center gap-12 lg:grid-cols-[55fr_45fr] lg:gap-0">
+
+  <div class="order-1 px-6 pt-16 md:px-10 lg:py-24 lg:pl-[max(2.5rem,calc((100vw-90rem)/2+2.5rem))] lg:pr-16 lg:pt-24">
+    <div class="max-w-[36rem]">
+      <h1 class="font-display text-5xl leading-[1.05] tracking-[-0.015em] text-ink md:text-7xl">
+        Capture the moment,<br class="hidden sm:block"> keep the memory
+      </h1>
+
+      <p class="mt-7 max-w-[58ch] text-lg leading-[1.6] text-ink/75 md:text-xl">
+        Premium photo, video, and audio booth rentals for weddings, corporate events,
+        birthdays, and celebrations across the islands. Professional prints in seconds,
+        digital sharing instantly.
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a href="#contact"
+           class="rounded-full bg-gold px-7 py-3 text-base font-semibold text-ink transition-[filter] hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+          Check your date
+        </a>
+        <!-- Target section arrives in build phase 3. -->
+        <a href="#try-it-out"
+           class="rounded-full border border-ink/30 px-7 py-3 text-base font-medium text-ink transition-colors hover:border-ink hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+          See how it works
+        </a>
+      </div>
+
+      <ul class="mt-14 flex flex-col gap-3 text-sm text-ink/70 sm:flex-row sm:gap-0">
+        <li class="sm:pr-5">Booked 400+ events</li>
+        <li class="sm:border-l sm:border-ink/20 sm:px-5">Unlimited prints on every package</li>
+        <li class="sm:border-l sm:border-ink/20 sm:pl-5">Attendant included</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bleeds to the right edge on desktop, to both edges as a band on mobile.
+       src comes from the ASSETS config so there is one place to swap it;
+       width/height are declared here so the box holds its space while loading.
+       Replace the alt text along with the photo — it must describe the real
+       image, not this placeholder. -->
+  <div class="order-2 h-[62vw] max-h-[26rem] w-full lg:h-[calc(100svh-4.5rem)] lg:max-h-none">
+    <img data-asset="hero" alt="Wedding guests laughing together inside a Hawaii Booths photo booth"
+         width="1200" height="1500" fetchpriority="high"
+         class="h-full w-full object-cover">
+  </div>
+</section>
+
+</main>
+
+<script>
+/* ─────────────────────────────────────────────────────────────
+   ASSETS — swap these for the client's real files.
+   Drop images into assets/img/ and change the paths below. Nothing else in
+   this file needs to be touched.
+
+   Paths must stay RELATIVE ('assets/img/hero.jpg', never '/assets/img/hero.jpg').
+   GitHub Pages serves this project from /Hawaii_PhotoBooth/, so a leading
+   slash resolves against the domain root: it works locally and 404s in
+   production, which is the worst way to find out.
+
+   Placeholders use picsum.photos — keyless, and deterministic per seed so the
+   layout does not reshuffle on every reload. Do not use source.unsplash.com;
+   that endpoint was retired and now returns 503 for every request.
+   ───────────────────────────────────────────────────────────── */
+const ASSETS = {
+  hero: 'https://picsum.photos/seed/hawaii-hero/1200/1500',
+  // services + gallery entries are added in the next build phase.
+};
+
+/* Every <img data-asset="key"> takes its src from ASSETS above. */
+document.querySelectorAll('img[data-asset]').forEach(img => {
+  const src = ASSETS[img.dataset.asset];
+  if (src) img.src = src;
+});
+
+/* ── Header: transparent over the hero, solid once the page moves ──
+   scroll fires far more often than the screen repaints, so the listener only
+   raises a flag and lets the next animation frame do the class write. */
+(function stickyHeader() {
+  const header = document.getElementById('site-header');
+  let ticking = false;
+
+  function update() {
+    header.classList.toggle('is-scrolled', window.scrollY > 40);
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }, { passive: true });
+
+  update();   // the page can load already scrolled (refresh, or a deep link)
+})();
+
+/* ── Services dropdown ── */
+(function servicesDropdown() {
+  const root = document.querySelector('[data-dropdown]');
+  if (!root) return;
+
+  const trigger = root.querySelector('[data-dropdown-trigger]');
+  const menu    = root.querySelector('[data-dropdown-menu]');
+  const caret   = root.querySelector('[data-dropdown-caret]');
+  const items   = Array.from(menu.querySelectorAll('a'));
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  const isOpen = () => !menu.hidden;
+
+  function open() {
+    menu.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    caret.style.transform = 'rotate(180deg)';
+  }
+
+  function close({ refocus = false } = {}) {
+    menu.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    caret.style.transform = '';
+    if (refocus) trigger.focus();
+  }
+
+  trigger.addEventListener('click', () => (isOpen() ? close() : open()));
+
+  root.addEventListener('mouseenter', () => { if (canHover.matches) open(); });
+  root.addEventListener('mouseleave', () => { if (canHover.matches) close(); });
+
+  root.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && isOpen()) {
+      e.stopPropagation();
+      close({ refocus: true });
+      return;
+    }
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!isOpen()) { open(); items[0].focus(); return; }
+      const i = items.indexOf(document.activeElement);
+      const next = e.key === 'ArrowDown'
+        ? (i + 1) % items.length
+        : (i <= 0 ? items.length - 1 : i - 1);
+      items[next].focus();
+    }
+  });
+
+  // Tabbing or clicking away closes it. focusout fires before the next element
+  // takes focus, so relatedTarget is the thing to test.
+  root.addEventListener('focusout', e => {
+    if (isOpen() && !root.contains(e.relatedTarget)) close();
+  });
+  document.addEventListener('click', e => {
+    if (isOpen() && !root.contains(e.target)) close();
+  });
+})();
+
+/* ── Mobile menu: a real modal, so focus is genuinely trapped inside it ── */
+(function mobileMenu() {
+  const panel    = document.getElementById('mobile-menu');
+  const toggle   = document.getElementById('menu-toggle');
+  const closeBtn = document.getElementById('menu-close');
+  const FOCUSABLE = 'a[href], button:not([disabled])';
+  let savedPaddingRight = '';
+
+  function open() {
+    panel.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    // Lock the page behind the overlay. The padding compensates for the
+    // scrollbar that disappears with overflow:hidden, so nothing jumps sideways.
+    savedPaddingRight = document.body.style.paddingRight;
+    const gap = window.innerWidth - document.documentElement.clientWidth;
+    if (gap > 0) document.body.style.paddingRight = gap + 'px';
+    document.body.style.overflow = 'hidden';
+    panel.querySelector(FOCUSABLE).focus();
+  }
+
+  function close() {
+    panel.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = savedPaddingRight;
+    toggle.focus();
+  }
+
+  toggle.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+
+  // Following a link dismisses the overlay, otherwise it covers the anchor.
+  panel.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', close));
+
+  panel.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { close(); return; }
+    if (e.key !== 'Tab') return;
+
+    const focusable = Array.from(panel.querySelectorAll(FOCUSABLE))
+      .filter(el => el.offsetParent !== null);   // skips links in a collapsed group
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  // Services disclosure inside the panel.
+  const sToggle = document.getElementById('mobile-services-toggle');
+  const sList   = document.getElementById('mobile-services');
+  const sCaret  = document.getElementById('mobile-services-caret');
+  sToggle.addEventListener('click', () => {
+    const nowOpen = sList.hidden;
+    sList.hidden = !nowOpen;
+    sToggle.setAttribute('aria-expanded', String(nowOpen));
+    sCaret.style.transform = nowOpen ? 'rotate(180deg)' : '';
+  });
+
+  // Resizing past the breakpoint would otherwise strand the overlay open with
+  // the desktop nav showing through underneath it.
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', e => {
+    if (e.matches && !panel.hidden) close();
+  });
+})();
+</script>
+
+</body>
+</html>
