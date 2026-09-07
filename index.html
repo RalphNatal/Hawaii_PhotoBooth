@@ -423,7 +423,90 @@
   </div>
 </section>
 
-<!-- The interactive booth demo is inserted here in build phase 3. -->
+<!-- ═══════════════════════════ TRY IT OUT ═══════════════════════════ -->
+<section id="try-it-out" class="bg-ink text-shell">
+  <div class="mx-auto max-w-[90rem] px-6 py-24 md:px-10 md:py-32">
+
+    <div class="max-w-[52ch]">
+      <h2 class="font-display text-3xl leading-[1.1] text-shell md:text-5xl">Try the booth right now</h2>
+      <p class="mt-6 text-lg leading-[1.6] text-sand/80">
+        Pick a frame, take a photo with your own camera, and watch it print. This is
+        the same framing your guests get on the night.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-10 lg:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] lg:gap-16">
+
+      <!-- ── Live preview ──
+           A fixed 4:5 box so what is on screen matches what the canvas captures.
+           The video is mirrored; the frame overlay above it is not. -->
+      <div>
+        <div id="preview-box" class="relative aspect-[4/5] w-full overflow-hidden bg-ocean/40">
+          <video id="preview-video" autoplay muted playsinline
+                 class="h-full w-full scale-x-[-1] object-cover"></video>
+
+          <!-- The finished photo replaces the live view after a capture. -->
+          <img id="captured-preview" alt="The photo you just took" hidden
+               class="absolute inset-0 h-full w-full object-cover">
+
+          <!-- Overlay frame. Purely decorative — the photo below carries the meaning. -->
+          <img id="frame-overlay" alt="" aria-hidden="true"
+               class="pointer-events-none absolute inset-0 h-full w-full object-cover">
+
+          <!-- Idle and error messages sit here. Visible on load. -->
+          <div id="preview-message"
+               class="absolute inset-0 flex items-center justify-center bg-ocean/60 p-8 text-center text-base leading-[1.6] text-shell">
+            Press <span class="mx-1 font-semibold">Start camera</span> to try a frame on.
+          </div>
+
+          <div id="countdown" hidden aria-hidden="true"
+               class="absolute inset-0 flex items-center justify-center bg-ink/40 font-display text-[8rem] leading-none text-shell"></div>
+
+          <div id="flash" class="pointer-events-none absolute inset-0 bg-white opacity-0"></div>
+        </div>
+
+        <p class="mt-4 text-sm leading-[1.6] text-sand/60">
+          Your camera runs entirely in your browser. Nothing is uploaded, stored, or
+          sent anywhere. We never ask for your microphone.
+        </p>
+      </div>
+
+      <!-- ── Controls ── -->
+      <div>
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-sand/70">Choose a frame</h3>
+
+        <div id="frame-picker" role="radiogroup" aria-label="Choose a frame"
+             class="mt-5 grid grid-cols-4 gap-3 sm:max-w-md"></div>
+
+        <div class="mt-10 flex flex-wrap gap-3">
+          <button type="button" id="btn-start"
+                  class="rounded-full bg-gold px-6 py-3 text-base font-semibold text-ink transition-[filter] hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shell focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
+            Start camera
+          </button>
+          <button type="button" id="btn-capture" disabled
+                  class="rounded-full border border-shell/40 px-6 py-3 text-base font-medium text-shell transition-colors hover:border-shell hover:bg-shell/10 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shell focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
+            Take photo
+          </button>
+          <button type="button" id="btn-retake" hidden
+                  class="rounded-full border border-shell/40 px-6 py-3 text-base font-medium text-shell transition-colors hover:border-shell hover:bg-shell/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shell focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
+            Retake
+          </button>
+          <a id="btn-save" hidden download="hawaii-booths.jpg" href="#"
+             class="rounded-full bg-gold px-6 py-3 text-base font-semibold text-ink transition-[filter] hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shell focus-visible:ring-offset-2 focus-visible:ring-offset-ink">
+            Save photo
+          </a>
+        </div>
+
+        <p class="mt-6 max-w-[52ch] text-sm leading-[1.6] text-sand/60">
+          Photos are saved at 1080 &times; 1350, the same 4:5 proportion we print at.
+          Switching frames after a shot re-prints it — you do not have to pose again.
+        </p>
+      </div>
+    </div>
+
+    <!-- The printer stage is inserted here in build phase 4. -->
+  </div>
+</section>
 
 <!-- ═══════════════════════════ PRICING ═══════════════════════════ -->
 <section id="pricing" class="mx-auto max-w-[90rem] px-6 py-24 md:px-10 md:py-32">
@@ -730,6 +813,117 @@ const ASSETS = {
   ],
 };
 
+/* Capture resolution. 1080 x 1350 is 4:5, which matches a 4x5 print — change
+   both numbers together to match the real booth's print size, and re-author the
+   frames to the same ratio if you do. */
+const OUTPUT_W = 1080;
+const OUTPUT_H = 1350;
+
+/* ─────────────────────────────────────────────────────────────
+   FRAMES — the overlays a guest can choose between.
+
+   Each frame is authored here as an inline SVG data URI so the page has zero
+   external asset dependencies out of the box. To use a real image instead,
+   replace `src` with a relative path:
+
+       { id: 'classic', name: 'Classic White', src: 'assets/frames/classic.png' }
+
+   Requirements for a replacement file:
+     - Transparent centre. Whatever is opaque covers the photo.
+     - Same aspect ratio as OUTPUT_W:OUTPUT_H (4:5). A different ratio will be
+       stretched, not letterboxed.
+     - At least 1080 x 1350. Larger is fine; smaller will look soft in print.
+     - PNG or SVG with an alpha channel. JPEG has no transparency and will
+       cover the entire photo.
+     - SAME ORIGIN. A frame loaded from another domain taints the canvas and
+       makes toBlob() throw a SecurityError, which breaks Save photo entirely.
+       Keep frames in assets/frames/. If one genuinely must be hosted
+       elsewhere, that host has to send Access-Control-Allow-Origin and the
+       image must be loaded with img.crossOrigin = 'anonymous' set BEFORE
+       img.src is assigned.
+
+   Note on the SVG root element: width and height are set explicitly, not just
+   viewBox. Firefox and Safari draw nothing when an SVG without intrinsic
+   dimensions is passed to canvas.drawImage — the frame would silently vanish
+   from saved photos in those browsers while looking fine in Chrome.
+
+   Note on text inside a frame: canvas cannot use webfonts from an SVG data
+   URI, so the wordmark below asks for Georgia and falls back to any serif.
+   ───────────────────────────────────────────────────────────── */
+const svgFrame = markup =>
+  'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="' + OUTPUT_W + '" height="' + OUTPUT_H +
+    '" viewBox="0 0 ' + OUTPUT_W + ' ' + OUTPUT_H + '">' + markup + '</svg>');
+
+const FRAMES = [
+  {
+    id: 'classic',
+    name: 'Classic White',
+    // Polaroid proportions: even border on three sides, deep bar at the bottom.
+    src: svgFrame(
+      '<g fill="#FDFCFA">' +
+        '<rect x="0" y="0" width="1080" height="56"/>' +
+        '<rect x="0" y="0" width="56" height="1350"/>' +
+        '<rect x="1024" y="0" width="56" height="1350"/>' +
+        '<rect x="0" y="1090" width="1080" height="260"/>' +
+      '</g>' +
+      '<rect x="490" y="1168" width="100" height="2" fill="#C4922F"/>' +
+      '<text x="540" y="1240" text-anchor="middle" font-family="Georgia,serif" ' +
+        'font-size="34" letter-spacing="7" fill="#062A3A">HAWAII BOOTHS</text>'
+    ),
+  },
+  {
+    id: 'gold',
+    name: 'Gold Leaf',
+    src: svgFrame(
+      '<g fill="none" stroke="#C4922F">' +
+        '<rect x="44" y="44" width="992" height="1262" stroke-width="4"/>' +
+        '<rect x="64" y="64" width="952" height="1222" stroke-width="1.5"/>' +
+        '<g stroke-width="3">' +
+          '<path d="M44 150 L150 44"/><path d="M1036 150 L930 44"/>' +
+          '<path d="M44 1200 L150 1306"/><path d="M1036 1200 L930 1306"/>' +
+        '</g>' +
+      '</g>'
+    ),
+  },
+  {
+    id: 'deco',
+    name: 'Ocean Deco',
+    // Stepped art-deco brackets at the corners, with a fine surf-coloured rule
+    // holding the whole composition together.
+    src: svgFrame(
+      '<g fill="none" stroke="#062A3A" stroke-width="10">' +
+        '<path d="M60 300 L60 130 L150 130 L150 60 L330 60"/>' +
+        '<path d="M1020 300 L1020 130 L930 130 L930 60 L750 60"/>' +
+        '<path d="M60 1050 L60 1220 L150 1220 L150 1290 L330 1290"/>' +
+        '<path d="M1020 1050 L1020 1220 L930 1220 L930 1290 L750 1290"/>' +
+      '</g>' +
+      '<rect x="96" y="96" width="888" height="1158" fill="none" stroke="#2E8B9E" stroke-width="2"/>'
+    ),
+  },
+  {
+    id: 'tropical',
+    name: 'Tropical',
+    // Monstera at the top left, palm fronds at the bottom right. Opposite
+    // corners so the middle of the frame stays clear of the faces.
+    src: svgFrame(
+      '<g fill="#0E4D63" opacity="0.9">' +
+        '<g transform="translate(-30,-30) rotate(-12 170 170)">' +
+          '<path d="M170 20 C262 42 322 112 322 200 C322 282 258 332 180 332 ' +
+            'C112 332 42 282 20 202 C62 212 102 200 122 170 C92 176 56 166 36 140 ' +
+            'C82 152 116 142 136 116 C110 110 86 90 76 64 C112 86 146 80 170 20 Z"/>' +
+        '</g>' +
+        '<g transform="translate(1110,1380) rotate(180)">' +
+          '<path d="M0 0 C44 -34 118 -64 210 -74 C158 -12 76 18 4 24 Z"/>' +
+          '<path transform="rotate(24)" d="M0 0 C44 -34 118 -64 210 -74 C158 -12 76 18 4 24 Z"/>' +
+          '<path transform="rotate(48)" d="M0 0 C44 -34 118 -64 210 -74 C158 -12 76 18 4 24 Z"/>' +
+          '<path transform="rotate(72)" d="M0 0 C44 -34 118 -64 210 -74 C158 -12 76 18 4 24 Z"/>' +
+        '</g>' +
+      '</g>'
+    ),
+  },
+];
+
 /* Every <img data-asset="key"> takes its src from ASSETS above. Dots walk into
    nested groups, so data-asset="services.photo" reads ASSETS.services.photo. */
 document.querySelectorAll('img[data-asset]').forEach(img => {
@@ -995,6 +1189,295 @@ document.querySelectorAll('img[data-asset]').forEach(img => {
     form.querySelectorAll('input, select, textarea, button').forEach(el => { el.disabled = true; });
     status.textContent = 'Thank you. Your enquiry has been received — we will confirm availability for your date within one business day.';
   });
+})();
+
+/* ═══════════════ THE BOOTH: camera, frames, capture ═══════════════ */
+(function booth() {
+  const section  = document.getElementById('try-it-out');
+  if (!section) return;
+
+  const video    = document.getElementById('preview-video');
+  const overlay  = document.getElementById('frame-overlay');
+  const captured = document.getElementById('captured-preview');
+  const message  = document.getElementById('preview-message');
+  const countEl  = document.getElementById('countdown');
+  const flashEl  = document.getElementById('flash');
+  const picker   = document.getElementById('frame-picker');
+
+  const btnStart   = document.getElementById('btn-start');
+  const btnCapture = document.getElementById('btn-capture');
+  const btnRetake  = document.getElementById('btn-retake');
+  const btnSave    = document.getElementById('btn-save');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  let stream = null;
+  let frameIndex = 0;
+  let photoUrl = null;      // current object URL; revoked before it is replaced
+  let busy = false;         // true during the countdown, so it cannot re-enter
+
+  /* Two canvases, both kept out of the DOM and never shown.
+     `raw` holds the mirrored camera frame on its own, so switching frames after
+     a shot can re-composite instantly instead of making the guest pose again.
+     `out` is raw + frame, and is what gets encoded to JPEG. */
+  const raw = document.createElement('canvas');
+  const out = document.createElement('canvas');
+  raw.width = out.width = OUTPUT_W;
+  raw.height = out.height = OUTPUT_H;
+  const rawCtx = raw.getContext('2d');
+  const outCtx = out.getContext('2d');
+
+  /* Decode every frame up front. drawImage on a half-loaded image draws
+     nothing, which would silently produce unframed photos. */
+  const frameImages = FRAMES.map(f => {
+    const img = new Image();
+    img.src = f.src;
+    return img;
+  });
+
+  // ── Frame picker: a radiogroup with roving tabindex ──
+  FRAMES.forEach((frame, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.role = 'radio';
+    btn.setAttribute('aria-checked', String(i === 0));
+    btn.tabIndex = i === 0 ? 0 : -1;
+    btn.title = frame.name;
+    btn.className = 'group relative aspect-[4/5] w-full overflow-hidden bg-surf/30 ' +
+      'ring-offset-2 ring-offset-ink focus-visible:outline-none focus-visible:ring-2 ' +
+      'focus-visible:ring-shell';
+    btn.innerHTML =
+      '<img src="' + frame.src + '" alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover">' +
+      '<span class="sr-only">' + frame.name + '</span>';
+    btn.addEventListener('click', () => select(i));
+    picker.appendChild(btn);
+  });
+
+  const options = Array.from(picker.querySelectorAll('[role="radio"]'));
+
+  function select(i, focus = false) {
+    frameIndex = i;
+    options.forEach((btn, n) => {
+      const on = n === i;
+      btn.setAttribute('aria-checked', String(on));
+      btn.tabIndex = on ? 0 : -1;
+      // Gold ring is the only place gold appears in this section.
+      btn.classList.toggle('ring-2', on);
+      btn.classList.toggle('ring-gold', on);
+    });
+    if (focus) options[i].focus();
+
+    overlay.src = FRAMES[i].src;
+    // A photo already on screen re-prints with the new frame.
+    if (photoUrl) compose();
+  }
+
+  picker.addEventListener('keydown', e => {
+    const keys = ['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'];
+    if (!keys.includes(e.key)) return;
+    e.preventDefault();
+    const forward = e.key === 'ArrowRight' || e.key === 'ArrowDown';
+    select((frameIndex + (forward ? 1 : -1) + FRAMES.length) % FRAMES.length, true);
+  });
+
+  select(0);
+
+  // ── Messaging ──
+  function say(html) {
+    message.innerHTML = html;
+    message.hidden = false;
+  }
+  const clearMessage = () => { message.hidden = true; };
+
+  /* ── Starting the camera ──
+     This runs only from a click on "Start camera". Asking on page load is
+     hostile, and most browsers block a prompt that no gesture asked for.
+
+     The constraints:
+       width/height  ask for a 4:5 portrait framing at up to 1080px wide.
+       ideal, not exact — a laptop with a fixed 16:9 sensor cannot satisfy
+       `exact` and would throw OverconstrainedError instead of giving us
+       something usable. With `ideal` the browser returns its closest match and
+       the canvas cover-crop below handles the difference.
+       facingMode 'user' selects the front camera on a phone.
+       audio false — this page never touches the microphone. Saying so in the
+       UI as well as the code is the point. */
+  async function startCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      say('The camera needs a secure connection. Open this page over <b>https</b> or <b>localhost</b>.');
+      return;
+    }
+
+    btnStart.disabled = true;
+    say('Starting camera&hellip;');
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: { ideal: 1080 }, height: { ideal: 1350 }, facingMode: 'user' },
+        audio: false,
+      });
+      video.srcObject = stream;
+      await video.play();
+
+      clearMessage();
+      btnStart.hidden = true;
+      btnCapture.disabled = false;
+      btnCapture.focus();
+    } catch (err) {
+      btnStart.disabled = false;
+
+      if (err.name === 'NotAllowedError') {
+        say('Camera access is blocked. Enable it in your browser&rsquo;s address-bar permissions, then press Start camera again.');
+      } else if (err.name === 'NotFoundError' || err.name === 'OverconstrainedError' || err.name === 'DevicesNotFoundError') {
+        say('No camera found. Connect one and try again.');
+      } else {
+        console.error('getUserMedia failed:', err.name, err);
+        say('The camera could not start. Check that no other app is using it, then press Start camera again.');
+      }
+    }
+  }
+
+  /* Releasing the track is what turns the camera light off. Anything less
+     leaves the light on, which reads as a page that is still watching. */
+  function stopCamera() {
+    if (!stream) return;
+    stream.getTracks().forEach(t => t.stop());
+    stream = null;
+    video.srcObject = null;
+    btnCapture.disabled = true;
+    if (!photoUrl) {
+      btnStart.hidden = false;
+      btnStart.disabled = false;
+      say('Camera stopped. Press <span class="font-semibold">Start camera</span> to try again.');
+    }
+  }
+
+  /* ── Compositing ──
+     Draws the stored camera frame, then the chosen overlay on top, and hands
+     back a JPEG object URL. Called on capture and again whenever the frame
+     changes while a photo is on screen. */
+  function compose() {
+    outCtx.clearRect(0, 0, OUTPUT_W, OUTPUT_H);
+    outCtx.drawImage(raw, 0, 0);
+
+    // Drawn AFTER the restore in capture(), so the frame is never mirrored —
+    // otherwise the wordmark on Classic White comes out backwards.
+    const frameImg = frameImages[frameIndex];
+    if (frameImg.complete && frameImg.naturalWidth) {
+      outCtx.drawImage(frameImg, 0, 0, OUTPUT_W, OUTPUT_H);
+    }
+
+    try {
+      out.toBlob(blob => {
+        if (!blob) return;
+        if (photoUrl) URL.revokeObjectURL(photoUrl);   // otherwise every retake leaks
+        photoUrl = URL.createObjectURL(blob);
+        captured.src = photoUrl;
+        captured.hidden = false;
+        btnSave.href = photoUrl;
+        document.dispatchEvent(new CustomEvent('hb:photo', { detail: { url: photoUrl } }));
+      }, 'image/jpeg', 0.92);
+    } catch (err) {
+      // Only reachable if a frame was loaded cross-origin without CORS headers.
+      console.error('Canvas is tainted, so the photo cannot be encoded:', err);
+      say('This photo could not be saved. A frame image was loaded from another domain — see the FRAMES comment in index.html.');
+    }
+  }
+
+  /* ── Capture ──
+     Cover-crop: the camera's native ratio rarely matches our 4:5 output, so
+     scale the video up until it covers the canvas on BOTH axes, centre it, and
+     let the overflow fall off the edges. This is exactly what CSS object-fit:
+     cover does to the preview, which is what makes the saved photo match what
+     the guest was looking at.
+
+     Then the mirror. The preview is flipped so it behaves like a mirror; if the
+     capture were not flipped too, the photo would be the reverse of what they
+     just saw. We flip the canvas coordinate system, draw the video, and RESTORE
+     before the frame goes on. */
+  function shoot() {
+    const scale = Math.max(OUTPUT_W / video.videoWidth, OUTPUT_H / video.videoHeight);
+    const drawW = video.videoWidth * scale;
+    const drawH = video.videoHeight * scale;
+    const dx = (OUTPUT_W - drawW) / 2;
+    const dy = (OUTPUT_H - drawH) / 2;
+
+    rawCtx.save();
+    rawCtx.translate(OUTPUT_W, 0);
+    rawCtx.scale(-1, 1);
+    rawCtx.drawImage(video, dx, dy, drawW, drawH);
+    rawCtx.restore();
+
+    compose();
+
+    captured.hidden = false;
+    btnCapture.hidden = true;
+    btnRetake.hidden = false;
+    btnSave.hidden = false;
+    btnRetake.focus();
+  }
+
+  async function countdownThenShoot() {
+    if (busy || !stream) return;
+    busy = true;
+    btnCapture.disabled = true;
+
+    countEl.hidden = false;
+    for (let n = 3; n > 0; n--) {
+      countEl.textContent = String(n);
+      await new Promise(r => setTimeout(r, 1000));
+    }
+    countEl.hidden = true;
+
+    // The flash is decoration, so it is skipped for reduced motion. The
+    // countdown itself is information and stays.
+    if (!reduceMotion.matches) {
+      flashEl.style.transition = 'opacity 120ms ease-out';
+      flashEl.style.opacity = '0.9';
+      setTimeout(() => {
+        flashEl.style.transition = 'opacity 230ms ease-in';
+        flashEl.style.opacity = '0';
+      }, 120);
+    }
+
+    shoot();
+    busy = false;
+  }
+
+  function retake() {
+    if (photoUrl) { URL.revokeObjectURL(photoUrl); photoUrl = null; }
+    captured.hidden = true;
+    captured.removeAttribute('src');
+    btnSave.hidden = true;
+    btnRetake.hidden = true;
+    btnCapture.hidden = false;
+
+    if (stream) {
+      btnCapture.disabled = false;
+      btnCapture.focus();
+    } else {
+      // The camera was released while the photo was on screen (hidden tab).
+      btnStart.hidden = false;
+      btnStart.disabled = false;
+      btnStart.focus();
+      say('Press <span class="font-semibold">Start camera</span> to take another.');
+    }
+  }
+
+  btnStart.addEventListener('click', startCamera);
+  btnCapture.addEventListener('click', countdownThenShoot);
+  btnRetake.addEventListener('click', retake);
+
+  // ── Releasing the camera ──
+  // Hidden tab, closed page, and scrolled well away all release the track.
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') stopCamera();
+  });
+  window.addEventListener('pagehide', stopCamera);
+
+  new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) stopCamera();
+  }, { rootMargin: '200px' }).observe(section);
 })();
 
 /* Copyright year, so the footer does not go stale. */
