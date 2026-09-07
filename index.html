@@ -66,6 +66,21 @@
       @apply block py-4 text-left font-display text-2xl text-ink
              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf;
     }
+    .field-label {
+      @apply mb-2 block text-sm font-medium text-ink/80;
+    }
+    .field {
+      @apply w-full border border-ink/25 bg-shell px-4 py-3 text-base text-ink
+             transition-colors placeholder:text-ink/40 hover:border-ink/40
+             focus:border-surf focus:outline-none focus-visible:ring-2
+             focus-visible:ring-surf focus-visible:ring-offset-2
+             focus-visible:ring-offset-shell;
+    }
+    .footer-link {
+      @apply rounded-sm text-sand/70 transition-colors hover:text-shell
+             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf
+             focus-visible:ring-offset-2 focus-visible:ring-offset-ink;
+    }
   }
 </style>
 
@@ -263,7 +278,416 @@
   </div>
 </section>
 
+<!-- ═══════════════════════════ ABOUT ═══════════════════════════ -->
+<section id="about" class="mx-auto max-w-[90rem] px-6 py-24 md:px-10 md:py-32">
+  <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+    <img data-asset="about" alt="The Hawaii Booths team setting up a booth ahead of an event"
+         width="1000" height="750" loading="lazy"
+         class="w-full object-cover">
+
+    <div>
+      <h2 class="font-display text-3xl leading-[1.1] text-ink md:text-5xl">
+        It started at a church Christmas service
+      </h2>
+      <div class="mt-7 max-w-[62ch] space-y-5 text-base leading-[1.7] text-ink/75">
+        <p>
+          Hawaii Booths began with a simple idea and an extraordinary moment — a
+          need for a touch of magic at a Christmas service hosted by a local church.
+          What started as a DIY project for that one event grew into the service we
+          run today.
+        </p>
+        <p>
+          We believe photography is not just about images. It is about encapsulating
+          the emotions, stories, and connections that make life special. That belief
+          shapes how we show up: on time, set up early, and running the booth
+          ourselves so nobody at your event has to think about it.
+        </p>
+      </div>
+      <span aria-hidden="true" class="mt-9 block h-px w-16 bg-gold"></span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ SERVICES ═══════════════════════════ -->
+<section id="services" class="mx-auto max-w-[90rem] px-6 pb-24 md:px-10 md:pb-32">
+  <h2 class="max-w-[20ch] font-display text-3xl leading-[1.1] text-ink md:text-5xl">
+    Four ways to keep the night
+  </h2>
+
+  <!-- The photo booth is the flagship, so it takes two columns and an extra
+       line of copy. The other three are equal siblings beside it. -->
+  <div class="mt-14 grid gap-x-8 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+
+    <article class="group lg:col-span-2">
+      <div class="overflow-hidden">
+        <img data-asset="services.photo" alt="Guests posing inside the open-air digital photo booth"
+             width="1200" height="800" loading="lazy"
+             class="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]">
+      </div>
+      <h3 class="mt-6 font-display text-2xl text-ink md:text-3xl">Photo Booths</h3>
+      <p class="mt-3 max-w-[62ch] text-base leading-[1.7] text-ink/75">
+        Unlimited photo sessions for the length of your rental, with your choice of
+        template design and backdrop, and digital plus physical props on the table.
+      </p>
+      <p class="mt-3 max-w-[62ch] text-base leading-[1.7] text-ink/75">
+        Guests share to social straight from the booth, and everyone gets a download
+        link to every photo from the event afterwards.
+      </p>
+      <a href="#pricing" class="mt-5 inline-block border-b border-gold pb-0.5 text-sm font-medium text-ocean transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+        Photo booth packages
+      </a>
+    </article>
+
+    <article class="group">
+      <div class="overflow-hidden">
+        <img data-asset="services.video" alt="The 360 video booth platform spinning at an evening event"
+             width="800" height="600" loading="lazy"
+             class="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]">
+      </div>
+      <h3 class="mt-6 font-display text-2xl text-ink">Video Booths</h3>
+      <p class="mt-3 max-w-[62ch] text-base leading-[1.7] text-ink/75">
+        A camera orbits your guests for unlimited video sessions, finished with a
+        custom overlay and outro.
+      </p>
+      <a href="#pricing" class="mt-5 inline-block border-b border-gold pb-0.5 text-sm font-medium text-ocean transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+        Video booth packages
+      </a>
+    </article>
+
+    <article class="group">
+      <div class="overflow-hidden">
+        <img data-asset="services.audio" alt="A vintage-style telephone handset used as an audio guest book"
+             width="800" height="600" loading="lazy"
+             class="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]">
+      </div>
+      <h3 class="mt-6 font-display text-2xl text-ink">Audio Booths</h3>
+      <p class="mt-3 max-w-[62ch] text-base leading-[1.7] text-ink/75">
+        A guest book you can hear. Guests pick up the phone, leave a message, and you
+        get a link to download every voicemail.
+      </p>
+      <a href="#pricing" class="mt-5 inline-block border-b border-gold pb-0.5 text-sm font-medium text-ocean transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+        Audio booth packages
+      </a>
+    </article>
+
+    <article class="group">
+      <div class="overflow-hidden">
+        <img data-asset="services.custom" alt="A custom slideshow playing on a screen at a reception"
+             width="800" height="600" loading="lazy"
+             class="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]">
+      </div>
+      <h3 class="mt-6 font-display text-2xl text-ink">Other Services</h3>
+      <p class="mt-3 max-w-[62ch] text-base leading-[1.7] text-ink/75">
+        Slideshow production, custom overlays, extra backdrops, and add-ons built
+        around what your event actually needs.
+      </p>
+      <a href="#contact" class="mt-5 inline-block border-b border-gold pb-0.5 text-sm font-medium text-ocean transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+        Ask about custom work
+      </a>
+    </article>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ HOW IT WORKS ═══════════════════════════ -->
+<!-- Numbering is used here and nowhere else on the page, because these four
+     things genuinely happen in this order. -->
+<section class="bg-sand">
+  <div class="mx-auto max-w-[90rem] px-6 py-24 md:px-10 md:py-32">
+    <h2 class="font-display text-3xl leading-[1.1] text-ink md:text-5xl">How it works</h2>
+
+    <ol class="relative mt-16 grid gap-12 md:grid-cols-4 md:gap-8">
+      <!-- Connecting rule, desktop only. Sits behind the numerals. -->
+      <span aria-hidden="true" class="absolute left-0 right-0 top-3 hidden h-px bg-ink/20 md:block"></span>
+
+      <li class="relative">
+        <span aria-hidden="true" class="relative z-10 block bg-sand pr-4 font-display text-2xl text-gold md:inline-block">01</span>
+        <h3 class="mt-4 font-display text-xl text-ink">Pick your date</h3>
+        <p class="mt-2 max-w-[36ch] text-base leading-[1.7] text-ink/75">Tell us when and where. We confirm availability the same day.</p>
+      </li>
+      <li class="relative">
+        <span aria-hidden="true" class="relative z-10 block bg-sand pr-4 font-display text-2xl text-gold md:inline-block">02</span>
+        <h3 class="mt-4 font-display text-xl text-ink">Choose your package</h3>
+        <p class="mt-2 max-w-[36ch] text-base leading-[1.7] text-ink/75">Booth type, backdrop, and template design — we help you match them to the room.</p>
+      </li>
+      <li class="relative">
+        <span aria-hidden="true" class="relative z-10 block bg-sand pr-4 font-display text-2xl text-gold md:inline-block">03</span>
+        <h3 class="mt-4 font-display text-xl text-ink">We set up and run it</h3>
+        <p class="mt-2 max-w-[36ch] text-base leading-[1.7] text-ink/75">We arrive early, set up, and staff the booth for the whole rental.</p>
+      </li>
+      <li class="relative">
+        <span aria-hidden="true" class="relative z-10 block bg-sand pr-4 font-display text-2xl text-gold md:inline-block">04</span>
+        <h3 class="mt-4 font-display text-xl text-ink">Everyone goes home with prints</h3>
+        <p class="mt-2 max-w-[36ch] text-base leading-[1.7] text-ink/75">Prints in hand on the night, and a download link to every file afterwards.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- The interactive booth demo is inserted here in build phase 3. -->
+
+<!-- ═══════════════════════════ PRICING ═══════════════════════════ -->
+<section id="pricing" class="mx-auto max-w-[90rem] px-6 py-24 md:px-10 md:py-32">
+  <div class="max-w-[52ch]">
+    <h2 class="font-display text-3xl leading-[1.1] text-ink md:text-5xl">Packages</h2>
+    <p class="mt-6 text-lg leading-[1.6] text-ink/75">
+      Every package is a two-hour base rental with unlimited sessions. Longer
+      coverage, extra backdrops, and add-ons are quoted on request.
+    </p>
+  </div>
+
+  <div class="mt-14 grid gap-8 lg:grid-cols-3">
+
+    <article class="flex flex-col border border-ink/15 p-8 md:p-10">
+      <h3 class="font-display text-2xl text-ink">360 Video Booth</h3>
+      <p class="mt-2 text-sm text-ink/60">2-hour rental</p>
+      <p class="mt-6 font-display text-4xl text-ink">from $425</p>
+      <ul class="mt-8 flex-1 space-y-3 text-base leading-[1.6] text-ink/75">
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Unlimited video sessions</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Custom video overlay and outro</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Standard music overlay</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Choice of video format</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Attendant for the full rental</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Digital download link</li>
+      </ul>
+      <a href="#contact" class="mt-9 block rounded-full border border-ink/30 px-6 py-3 text-center text-base font-medium text-ink transition-colors hover:border-ink hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+        Request this package
+      </a>
+    </article>
+
+    <!-- The middle tier is the one most events book, so it carries the ocean
+         fill. That is the whole highlight — no ribbon, no scale transform. -->
+    <article class="flex flex-col bg-ocean p-8 text-shell md:p-10">
+      <h3 class="font-display text-2xl">Digital Photo Booth</h3>
+      <p class="mt-2 text-sm text-shell/70">2-hour rental</p>
+      <p class="mt-6 font-display text-4xl">from $625</p>
+      <ul class="mt-8 flex-1 space-y-3 text-base leading-[1.6] text-shell/85">
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Unlimited photo sessions</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Choose your template photo design</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Digital and physical props</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Choose your backdrop</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Social media sharing</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Digital download link of event photos</li>
+      </ul>
+      <a href="#contact" class="mt-9 block rounded-full bg-gold px-6 py-3 text-center text-base font-semibold text-ink transition-[filter] hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-shell focus-visible:ring-offset-2 focus-visible:ring-offset-ocean">
+        Request this package
+      </a>
+    </article>
+
+    <article class="flex flex-col border border-ink/15 p-8 md:p-10">
+      <h3 class="font-display text-2xl text-ink">Glambot Robot Booth</h3>
+      <p class="mt-2 text-sm text-ink/60">2-hour rental</p>
+      <p class="mt-6 font-display text-4xl text-ink">from $925</p>
+      <ul class="mt-8 flex-1 space-y-3 text-base leading-[1.6] text-ink/75">
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Robotic arm camera sweep</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Unlimited video sessions</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Slow-motion glam finish</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Choose your backdrop</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Attendant for the full rental</li>
+        <li class="flex gap-3"><span aria-hidden="true" class="mt-1.5 text-gold">&check;</span>Digital download of all event videos</li>
+      </ul>
+      <a href="#contact" class="mt-9 block rounded-full border border-ink/30 px-6 py-3 text-center text-base font-medium text-ink transition-colors hover:border-ink hover:bg-ink/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+        Request this package
+      </a>
+    </article>
+  </div>
+
+  <p class="mt-10 text-sm leading-[1.6] text-ink/60">
+    Also available: 360 Sky Video Booth from $800, Audio Guest Book Phone from $300,
+    and Slideshow Services from $350 per show. Final quotes depend on your date and
+    location.
+  </p>
+</section>
+
+<!-- ═══════════════════════════ GALLERY ═══════════════════════════ -->
+<section id="gallery" class="mx-auto max-w-[90rem] px-6 pb-24 md:px-10 md:pb-32">
+  <h2 class="font-display text-3xl leading-[1.1] text-ink md:text-5xl">From recent events</h2>
+  <div id="gallery-grid" class="mt-14 columns-2 gap-4 md:columns-3 md:gap-6"></div>
+</section>
+
+<!-- Lightbox. Hidden until a thumbnail is activated; focus is trapped inside
+     it and returned to the thumbnail that opened it on close. -->
+<div id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Gallery image"
+     class="fixed inset-0 z-[70] flex items-center justify-center bg-ink/95 p-4 md:p-10">
+  <button type="button" id="lightbox-close"
+          class="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full text-shell hover:bg-shell/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf">
+    <span class="sr-only">Close gallery</span>
+    <svg aria-hidden="true" viewBox="0 0 24 24" class="h-6 w-6"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <button type="button" id="lightbox-prev"
+          class="absolute left-2 flex h-12 w-12 items-center justify-center rounded-full text-shell hover:bg-shell/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf md:left-6">
+    <span class="sr-only">Previous image</span>
+    <svg aria-hidden="true" viewBox="0 0 24 24" class="h-7 w-7"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button type="button" id="lightbox-next"
+          class="absolute right-2 flex h-12 w-12 items-center justify-center rounded-full text-shell hover:bg-shell/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf md:right-6">
+    <span class="sr-only">Next image</span>
+    <svg aria-hidden="true" viewBox="0 0 24 24" class="h-7 w-7"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <img id="lightbox-img" alt="" class="max-h-full max-w-full object-contain">
+</div>
+
+<!-- ═══════════════════════════ TESTIMONIALS ═══════════════════════════ -->
+<!-- TODO: these two quotes are PLACEHOLDER COPY. Replace them with real,
+     attributable quotes from actual clients before this page goes live. -->
+<section class="bg-sand">
+  <div class="mx-auto max-w-[90rem] px-6 py-24 md:px-10 md:py-32">
+    <div class="grid gap-14 md:grid-cols-2 md:gap-20">
+      <figure>
+        <blockquote class="font-display text-2xl leading-[1.35] text-ink md:text-3xl">
+          The booth had a line all night and the prints were in people&rsquo;s hands
+          before they walked away. Half our wedding album is photos we did not take.
+        </blockquote>
+        <figcaption class="mt-6 text-sm text-ink/70">Malia &middot; Wedding, Oahu</figcaption>
+      </figure>
+      <figure>
+        <blockquote class="font-display text-2xl leading-[1.35] text-ink md:text-3xl">
+          They set up an hour early, ran the whole thing themselves, and our staff
+          still talk about the 360 clips. Easiest vendor we booked all year.
+        </blockquote>
+        <figcaption class="mt-6 text-sm text-ink/70">Daniel &middot; Corporate holiday party</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ CONTACT ═══════════════════════════ -->
+<section id="contact" class="mx-auto max-w-[90rem] px-6 py-24 md:px-10 md:py-32">
+  <div class="grid gap-14 lg:grid-cols-[3fr_2fr] lg:gap-20">
+
+    <div>
+      <h2 class="font-display text-3xl leading-[1.1] text-ink md:text-5xl">Check your date</h2>
+      <p class="mt-6 max-w-[62ch] text-lg leading-[1.6] text-ink/75">
+        Tell us about your event and we will come back with availability and a quote.
+      </p>
+
+      <form id="booking-form" novalidate class="mt-10 grid gap-6 sm:grid-cols-2">
+        <div class="sm:col-span-1">
+          <label for="f-name" class="field-label">Full name</label>
+          <input id="f-name" name="name" type="text" required autocomplete="name" class="field">
+        </div>
+        <div class="sm:col-span-1">
+          <label for="f-email" class="field-label">Email address</label>
+          <input id="f-email" name="email" type="email" required autocomplete="email" class="field">
+        </div>
+        <div class="sm:col-span-1">
+          <label for="f-phone" class="field-label">Phone number</label>
+          <input id="f-phone" name="phone" type="tel" autocomplete="tel" class="field">
+        </div>
+        <div class="sm:col-span-1">
+          <label for="f-date" class="field-label">Event date</label>
+          <input id="f-date" name="date" type="date" class="field">
+        </div>
+        <div class="sm:col-span-1">
+          <label for="f-booth" class="field-label">What type of booth are you looking for?</label>
+          <select id="f-booth" name="booth" class="field">
+            <option value="">Select a booth</option>
+            <option>Photo Booth</option>
+            <option>Audio Message Booth</option>
+            <option>360 Video Booth</option>
+            <option>360 Sky Booth</option>
+            <option>Glambot (Manual)</option>
+            <option>Glambot (Automatic)</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="sm:col-span-1">
+          <label for="f-event" class="field-label">Type of event</label>
+          <select id="f-event" name="event" class="field">
+            <option value="">Select an event type</option>
+            <option>Wedding</option>
+            <option>Birthday</option>
+            <option>Corporate event</option>
+            <option>School event or prom</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label for="f-message" class="field-label">Anything else we should know?</label>
+          <textarea id="f-message" name="message" rows="4" class="field"></textarea>
+        </div>
+
+        <div class="sm:col-span-2">
+          <button type="submit"
+                  class="rounded-full bg-gold px-7 py-3 text-base font-semibold text-ink transition-[filter] hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2 focus-visible:ring-offset-shell">
+            Send enquiry
+          </button>
+          <!-- Announced to screen readers the moment it appears. -->
+          <p id="form-status" role="status" aria-live="polite" class="mt-4 text-base text-ocean"></p>
+        </div>
+      </form>
+    </div>
+
+    <div class="lg:pt-24">
+      <dl class="space-y-8 border-t border-ink/15 pt-8 text-base leading-[1.7]">
+        <div>
+          <dt class="text-sm text-ink/60">Phone</dt>
+          <dd class="mt-1"><a href="tel:+18008050920" class="text-ink underline decoration-gold underline-offset-4 hover:text-ocean focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2">1-800-805-0920</a></dd>
+        </div>
+        <div>
+          <dt class="text-sm text-ink/60">Email</dt>
+          <dd class="mt-1"><a href="mailto:hawaiibooths@gmail.com" class="text-ink underline decoration-gold underline-offset-4 hover:text-ocean focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf focus-visible:ring-offset-2">hawaiibooths@gmail.com</a></dd>
+        </div>
+        <div>
+          <dt class="text-sm text-ink/60">Address</dt>
+          <dd class="mt-1 text-ink/80">2825 Ala Ilima St<br>Honolulu, HI 96818</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-ink/60">Response time</dt>
+          <dd class="mt-1 text-ink/80">Same-day on availability enquiries.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
+
 </main>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer class="bg-ink text-sand">
+  <div class="mx-auto max-w-[90rem] px-6 py-16 md:px-10 md:py-20">
+    <div class="grid gap-12 md:grid-cols-4">
+      <div class="md:col-span-2">
+        <span class="block font-display text-xl tracking-[0.08em] text-shell">HAWAII BOOTHS</span>
+        <span aria-hidden="true" class="mt-2 block h-px w-6 bg-gold"></span>
+        <p class="mt-6 max-w-[42ch] text-sm leading-[1.7] text-sand/70">
+          Photo, video, and audio booth rentals for weddings, corporate events,
+          birthdays, and celebrations across the islands.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-sm font-semibold text-shell">Explore</h2>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <li><a href="#top" class="footer-link">Home</a></li>
+          <li><a href="#about" class="footer-link">About</a></li>
+          <li><a href="#pricing" class="footer-link">Pricing</a></li>
+          <li><a href="#gallery" class="footer-link">Gallery</a></li>
+          <li><a href="#contact" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-sm font-semibold text-shell">Booths</h2>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <li><a href="#services" class="footer-link">Photo Booths</a></li>
+          <li><a href="#services" class="footer-link">Video Booths</a></li>
+          <li><a href="#services" class="footer-link">Audio Booths</a></li>
+          <li><a href="#services" class="footer-link">Other Services</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-14 flex flex-col gap-6 border-t border-sand/20 pt-8 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-sm text-sand/60">&copy; <span id="year">2026</span> Hawaii Booths. All rights reserved.</p>
+      <!-- TODO: point these at the real profiles before launch. -->
+      <ul class="flex gap-5 text-sm">
+        <li><a href="https://www.instagram.com/" class="footer-link">Instagram</a></li>
+        <li><a href="https://www.facebook.com/" class="footer-link">Facebook</a></li>
+        <li><a href="https://www.tiktok.com/" class="footer-link">TikTok</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
 
 <script>
 /* ─────────────────────────────────────────────────────────────
@@ -281,14 +705,37 @@
    that endpoint was retired and now returns 503 for every request.
    ───────────────────────────────────────────────────────────── */
 const ASSETS = {
-  hero: 'https://picsum.photos/seed/hawaii-hero/1200/1500',
-  // services + gallery entries are added in the next build phase.
+  hero:  'https://picsum.photos/seed/hawaii-hero/1200/1500',
+  about: 'https://picsum.photos/seed/hawaii-about/1000/750',
+
+  services: {
+    photo:  'https://picsum.photos/seed/hawaii-photo/1200/800',
+    video:  'https://picsum.photos/seed/hawaii-video/800/600',
+    audio:  'https://picsum.photos/seed/hawaii-audio/800/600',
+    custom: 'https://picsum.photos/seed/hawaii-custom/800/600',
+  },
+
+  // Eight gallery images. The masonry columns look best with mixed heights,
+  // so the placeholder ratios are deliberately uneven — keep that variety
+  // when swapping in the real photos.
+  gallery: [
+    { src: 'https://picsum.photos/seed/hb-g1/800/1000', w: 800, h: 1000, alt: 'Two guests in matching sunglasses posing in the booth at a wedding reception' },
+    { src: 'https://picsum.photos/seed/hb-g2/800/600',  w: 800, h: 600,  alt: 'A bridal party crowding into the booth together' },
+    { src: 'https://picsum.photos/seed/hb-g3/800/900',  w: 800, h: 900,  alt: 'A guest recording a message on the audio guest book phone' },
+    { src: 'https://picsum.photos/seed/hb-g4/800/800',  w: 800, h: 800,  alt: 'The 360 video booth mid-spin at an evening corporate party' },
+    { src: 'https://picsum.photos/seed/hb-g5/800/1100', w: 800, h: 1100, alt: 'A strip of freshly printed photos held up to the camera' },
+    { src: 'https://picsum.photos/seed/hb-g6/800/620',  w: 800, h: 620,  alt: 'Guests choosing props from the prop table beside the booth' },
+    { src: 'https://picsum.photos/seed/hb-g7/800/950',  w: 800, h: 950,  alt: 'A birthday party group photo taken against the sequin backdrop' },
+    { src: 'https://picsum.photos/seed/hb-g8/800/700',  w: 800, h: 700,  alt: 'The booth set up and lit before guests arrive at a ballroom event' },
+  ],
 };
 
-/* Every <img data-asset="key"> takes its src from ASSETS above. */
+/* Every <img data-asset="key"> takes its src from ASSETS above. Dots walk into
+   nested groups, so data-asset="services.photo" reads ASSETS.services.photo. */
 document.querySelectorAll('img[data-asset]').forEach(img => {
-  const src = ASSETS[img.dataset.asset];
+  const src = img.dataset.asset.split('.').reduce((o, k) => (o ? o[k] : undefined), ASSETS);
   if (src) img.src = src;
+  else console.warn('ASSETS is missing an entry for', img.dataset.asset);
 });
 
 /* ── Header: transparent over the hero, solid once the page moves ──
@@ -435,6 +882,123 @@ document.querySelectorAll('img[data-asset]').forEach(img => {
     if (e.matches && !panel.hidden) close();
   });
 })();
+
+/* ── Gallery + lightbox ──
+   Thumbnails are built from ASSETS.gallery so the client only edits that array.
+   CSS columns do the masonry; break-inside-avoid stops an image splitting
+   across a column boundary. */
+(function gallery() {
+  const grid = document.getElementById('gallery-grid');
+  const box  = document.getElementById('lightbox');
+  if (!grid || !box) return;
+
+  const imgEl   = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
+
+  let index = 0;
+  let opener = null;   // the thumbnail that opened the lightbox, for focus return
+
+  ASSETS.gallery.forEach((item, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'mb-4 block w-full break-inside-avoid overflow-hidden md:mb-6 ' +
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-surf ' +
+                    'focus-visible:ring-offset-2 focus-visible:ring-offset-shell';
+    btn.innerHTML =
+      '<img src="' + item.src + '" alt="' + item.alt + '" width="' + item.w + '" height="' + item.h +
+      '" loading="lazy" class="w-full transition-transform duration-500 hover:scale-[1.03]">';
+    btn.addEventListener('click', () => open(i, btn));
+    grid.appendChild(btn);
+  });
+
+  function show(i) {
+    index = (i + ASSETS.gallery.length) % ASSETS.gallery.length;   // wraps both ways
+    imgEl.src = ASSETS.gallery[index].src;
+    imgEl.alt = ASSETS.gallery[index].alt;
+  }
+
+  function open(i, trigger) {
+    opener = trigger;
+    show(i);
+    box.hidden = false;
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function close() {
+    box.hidden = true;
+    imgEl.removeAttribute('src');   // stops a large image sitting in memory
+    document.body.style.overflow = '';
+    if (opener) opener.focus();
+  }
+
+  closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', () => show(index - 1));
+  nextBtn.addEventListener('click', () => show(index + 1));
+
+  // Clicking the backdrop closes; clicking the photo or a control does not.
+  box.addEventListener('click', e => { if (e.target === box) close(); });
+
+  document.addEventListener('keydown', e => {
+    if (box.hidden) return;
+    if (e.key === 'Escape')     { close(); }
+    if (e.key === 'ArrowLeft')  { show(index - 1); }
+    if (e.key === 'ArrowRight') { show(index + 1); }
+
+    if (e.key === 'Tab') {
+      // A dialog keeps focus inside itself; only three controls to cycle.
+      const controls = [closeBtn, prevBtn, nextBtn];
+      const i = controls.indexOf(document.activeElement);
+      e.preventDefault();
+      const next = e.shiftKey
+        ? (i <= 0 ? controls.length - 1 : i - 1)
+        : (i + 1) % controls.length;
+      controls[next].focus();
+    }
+  });
+})();
+
+/* ── Booking form ──
+   Deliberately does not submit. The page is static, so there is no endpoint to
+   post to yet — it validates, then shows an inline confirmation. */
+(function bookingForm() {
+  const form   = document.getElementById('booking-form');
+  const status = document.getElementById('form-status');
+  if (!form) return;
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+
+    // novalidate is set on the form so the browser does not interrupt with its
+    // own bubbles; we ask for the same check explicitly and let it report.
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    /* TODO: POST the enquiry to a real endpoint here.
+       The form data is ready as:
+
+           const data = Object.fromEntries(new FormData(form));
+
+       Three options, cheapest first:
+       1. Formspree — create a form at formspree.io, then set
+          form.action = 'https://formspree.io/f/<your-id>' and method="POST"
+          and delete this handler entirely. Works on GitHub Pages.
+       2. Netlify Forms — add netlify to the <form> tag, but this only works if
+          the site is hosted on Netlify rather than GitHub Pages.
+       3. Your own API — fetch(url, { method: 'POST', body: JSON.stringify(data) })
+          and show the success state in the .then(). */
+
+    form.querySelectorAll('input, select, textarea, button').forEach(el => { el.disabled = true; });
+    status.textContent = 'Thank you. Your enquiry has been received — we will confirm availability for your date within one business day.';
+  });
+})();
+
+/* Copyright year, so the footer does not go stale. */
+document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 
 </body>
