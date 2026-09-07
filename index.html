@@ -85,6 +85,12 @@
 </style>
 
 <style>
+  /* The `hidden` attribute has to beat Tailwind's display utilities. Without
+     this, any element that is both hidden and `flex` — the lightbox, the
+     countdown, the idle message — renders permanently visible, because a
+     utility class outranks the browser's own [hidden] rule. */
+  [hidden] { display: none !important; }
+
   /* Anchor links land below the sticky header instead of underneath it. */
   [id] { scroll-margin-top: 6rem; }
 
@@ -1270,7 +1276,7 @@ document.querySelectorAll('img[data-asset]').forEach(img => {
   FRAMES.forEach((frame, i) => {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.role = 'radio';
+    btn.setAttribute('role', 'radio');   // the .role property only reflects on newer browsers
     btn.setAttribute('aria-checked', String(i === 0));
     btn.tabIndex = i === 0 ? 0 : -1;
     btn.title = frame.name;
